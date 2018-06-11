@@ -39,7 +39,7 @@ neighborwise.default <- function(x, y, rate, ...) {
   df <- list()
   df$x <- data[,-ncol(data)]
   df$y <- data$class
-  return(df)
+  df
 }
 
 #' @rdname neighborwise
@@ -62,7 +62,6 @@ neighborwise.formula <- function(formula, data, rate, ...) {
   tmp <- data.frame(aux$y, aux$x)
   colnames(tmp) <- colnames(modFrame)
   tmp[,colnames(data)]
-
 }
 
 dist <- function(data) {
