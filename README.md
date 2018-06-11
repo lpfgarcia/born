@@ -4,7 +4,7 @@ The born package provides two new methods for the artificial addition of label n
 
 ## Installation
 
-The installation process is similar to other packages available on CRAN:
+The installation process using devtools is:
 
 ```r
 if (!require("devtools")) {
@@ -16,10 +16,10 @@ library("born")
 
 ## Example of use
 
-The simplest way to generate the noisy dataset is using the `neighborwise` and `nonlinearwise` functions. The method can be called by a symbolic description (formula) of the model or by a data frame. The parameters are the dataset and the ratio of noise. A simple example is given next:
+The simplest way to generate the noisy dataset is using the `neighborwise` and `nonlinearwise` functions. The methods can be called by a symbolic description of the dataset (formula) or by a data frame (x, y). The parameters are the dataset and the ratio of noise. A simple example is given next:
 
 ```r
-## Generate a noisy dataset based on Nearest Neighbor technique with 10% of noise
+## Generate a noisy dataset based on nearest neighbor technique with 10% of noise
 neighborwise(Species ~ ., iris, rate=0.1)
 
 ## Generate a noisy dataset based on non-linear technique with 10% of noise
