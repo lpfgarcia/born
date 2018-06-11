@@ -37,7 +37,7 @@ nonlinearwise.default <- function(x, y, rate, ...) {
 
   noise <- translate(l1(bins, model))
   noise <- names(sort(noise)[1:rate])
-  data <- random(data, noise)
+  data <- generate(data, noise)
 
   df <- list()
   df$x <- data[,-ncol(data)]

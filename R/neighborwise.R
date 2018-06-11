@@ -34,7 +34,7 @@ neighborwise.default <- function(x, y, rate, ...) {
 
   noise <- n2(data)
   noise <- names(rev(sort(noise))[1:rate])
-  data <- random(data, noise)
+  data <- generate(data, noise)
 
   df <- list()
   df$x <- data[,-ncol(data)]
