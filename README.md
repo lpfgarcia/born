@@ -1,6 +1,6 @@
 # born
 
-The born package provides two new methods for the artificial addition of label noise into datasets based on borderline noise. The difference between the two methods is the criterion and bias adopted to estimate which are the borderline examples to be disturbed. The first method is based on the ratio of intra/inter class Nearest Neighbor distance and the second method is based on the distance between the examples and the decision border induced by a radial kernel.
+The born package provides two new methods for the artificial addition of label noise into datasets based on borderline noise. The difference between the two methods is the criterion and bias adopted to estimate which are the borderline examples to be disturbed: the first method is based on the ratio of intra/inter class Nearest Neighbor distance and the second method is based on the distance between the examples and the decision border induced by a radial kernel.
 
 ## Installation
 
