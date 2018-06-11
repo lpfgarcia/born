@@ -32,12 +32,9 @@ nonlinearwise.default <- function(x, y, rate, ...) {
   data <- data.frame(x, class=y)
   rate <- trunc(nrow(data)*rate)
 
+  model <- lapply(ovo(data), svr)
 
-  bins <- ovo(data)
-  model <- lapply(bins, smo)
-
-  noise <- l1(bins, model)
-  noise <- translate(noise)
+  noise <- translate(l1(bins, model))
   noise <- names(sort(noise)[1:rate])
   data <- random(data, noise)
 
@@ -70,8 +67,8 @@ nonlinearwise.formula <- function(formula, data, rate, ...) {
 
 }
 
-smo <- function(data) {
-  e1071::svm(class ~ ., data, scale=TRUE, kernel="linear")
+svr <- function(data) {
+  e1071::svm(class ~ ., data, scale=FALSE, kernel="radial")
 }
 
 ovo <- function(data) {
@@ -87,12 +84,6 @@ ovo <- function(data) {
   return(tmp)
 }
 
-hyperplane <- function(data, model) {
-  aux <- stats::predict(model, data, decision.values=TRUE)
-  aux <- abs(attr(aux, "decision.values"))
-  return(aux)
-}
-
 translate <- function(data) {
   aux <- apply(data[, -1], 1, min, na.rm=TRUE)
   names(aux) <- data$r
@@ -102,7 +93,8 @@ translate <- function(data) {
 l1 <- function(data, model) {
 
   aux <- mapply(function(m, d) {
-    tmp <- hyperplane(d, m)
+    tmp <- stats::predict(m, d, decision.values=TRUE)
+    tmp <- abs(attr(tmp, "decision.values"))
     data.frame(r=rownames(tmp), d=tmp)
   }, m=model, d=data, SIMPLIFY=FALSE)
 
