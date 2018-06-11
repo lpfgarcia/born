@@ -3,13 +3,13 @@ Type: Package
 Version: 0.1.0
 Date: 2018-06-12
 Title: Generate Borderline Noise for Classification Problems
-Description: Provides two new methods for the artificial addition of label noise
-    into datasets based on borderline noise. The difference between the two 
-    methods is the criterion and bias adopted to estimate which are the 
-    borderline examples to be disturbed: the first method is based on the ratio 
-    of intra/inter class Nearest Neighbor distance and the second method is 
-    based on the distance between the examples and the decision border induced 
-    by a radial kernel.
+Description: Provides new methods for the artificial addition of label noise in 
+    the borderline examples to add more challenging and yet realistic artificial
+    noise to classification datasets. The main difference between the methods is
+    the criterion and bias adopted to estimate which are the borderline examples
+    to be disturbed: the first method is based on the ratio of intra/inter class
+    Nearest Neighbor distance and the second method is based on the distance 
+    between the examples and the decision border induced by a radial kernel.
 Author: Luis Garcia [aut, cre],
   Jens Lehmann [aut],
   Andre de Carvalho [aut],
