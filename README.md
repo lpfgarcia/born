@@ -28,4 +28,6 @@ nonlinearwise(Species ~ ., iris, rate=0.1)
 
 ## Developer notes
 
+To cite `born` in publications use: Luis Garcia, Jens Lehmann, Andre de Carvalho, and Ana Lorena. (2018). born: Simulate Borderline Noise. R package version 0.1.0, https://github.com/lpfgarcia/born/
+
 To submit bugs and feature requests, report at [project issues](https://github.com/lpfgarcia/born/issues).
