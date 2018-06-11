@@ -2,11 +2,11 @@ Package: born
 Type: Package
 Version: 0.1.0
 Date: 2018-06-12
-Title: Simulate Borderline Noise
+Title: Generate Borderline Noise for Classification Problems
 Description: Provides two new methods for the artificial addition of label noise
     into datasets based on borderline noise. The difference between the two 
     methods is the criterion and bias adopted to estimate which are the 
-    borderline examples to be disturbed. The first method is based on the ratio 
+    borderline examples to be disturbed: the first method is based on the ratio 
     of intra/inter class Nearest Neighbor distance and the second method is 
     based on the distance between the examples and the decision border induced 
     by a radial kernel.
