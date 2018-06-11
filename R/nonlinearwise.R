@@ -32,7 +32,8 @@ nonlinearwise.default <- function(x, y, rate, ...) {
   data <- data.frame(x, class=y)
   rate <- trunc(nrow(data)*rate)
 
-  model <- lapply(ovo(data), svr)
+  bins <- ovo(data)
+  model <- lapply(bins, svr)
 
   noise <- translate(l1(bins, model))
   noise <- names(sort(noise)[1:rate])
