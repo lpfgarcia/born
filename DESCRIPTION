@@ -1,0 +1,27 @@
+Package: born
+Type: Package
+Version: 0.1.0
+Date: 2018-06-12
+Title: Simulate Borderline Noise
+Description: Provides two new methods for the artificial addition of label noise
+    into datasets based on borderline noise. The difference between the two 
+    methods is the criterion and bias adopted to estimate which are the 
+    borderline examples to be disturbed. The first method is based on the ratio 
+    of intra/inter class Nearest Neighbor distance and the second method is 
+    based on the distance between the examples and the decision border induced 
+    by a radial kernel.
+Author: Luis Garcia [aut, cre],
+  Jens Lehmann [aut],
+  Andre de Carvalho [aut],
+  Ana Lorena [aut]
+Maintainer: Luis Garcia <garcia@informatik.uni-leipzig.de>
+URL: https://github.com/lpfgarcia/born/
+Imports:
+  cluster,
+  e1071,
+  stats
+License: MIT + file LICENSE
+BugReports: https://github.com/lpfgarcia/born/issues
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
