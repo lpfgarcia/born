@@ -22,6 +22,9 @@ The simplest way to generate the noisy dataset is using the `random`, `neighborw
 ## Generate an iris dataset with 10% of random noise
 random(Species ~ ., iris, rate=0.1)
 
+## Generate an iris dataset with 10% of random noise
+random(iris[,1:4], iris[,5], rate=0.1)
+
 ## Generate an iris dataset with 10% of neighborwise noise
 neighborwise(Species ~ ., iris, rate=0.1)
 
