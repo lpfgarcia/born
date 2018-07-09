@@ -19,14 +19,14 @@ library("born")
 The simplest way to generate the noisy dataset is using the `random`, `neighborwise` and `nonlinearwise` functions. The methods can be called by a symbolic description of the dataset (formula) or by a data frame (x, y). The parameters are the dataset and the ratio of noise. A simple example is given next:
 
 ```r
-## Generate a noisy dataset based on random label noise with 10% of noise
+## Generate an iris dataset with 10% of random noise
 random(Species ~ ., iris, rate=0.1)
 
-## Generate a noisy dataset based on nearest neighbor technique with 20% of noise
-neighborwise(Species ~ ., iris, rate=0.2)
+## Generate an iris dataset with 10% of neighborwise noise
+neighborwise(Species ~ ., iris, rate=0.1)
 
-## Generate a noisy dataset based on non-linear technique with 30% of noise
-nonlinearwise(Species ~ ., iris, rate=0.3)
+## Generate an iris dataset with 10% of nonlinearwise noise
+nonlinearwise(Species ~ ., iris, rate=0.1)
 ```
 
 ## Developer notes
