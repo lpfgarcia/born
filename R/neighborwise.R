@@ -29,17 +29,11 @@ neighborwise.default <- function(x, y, rate, ...) {
     stop("the noise rate must be higher than 0 and lower than 1")
   }
 
-  data <- data.frame(x, class=y)
-  rate <- trunc(nrow(data)*rate)
+  rate <- trunc(nrow(x)*rate)
 
-  noise <- n2(data)
-  noise <- names(rev(sort(noise))[1:rate])
-  data <- generate(data, noise)
-
-  df <- list()
-  df$x <- data[,-ncol(data)]
-  df$y <- data$class
-  df
+  noise <- n2(x, y)
+  noise <- rev(order(noise))[1:rate]
+  generate(noise, y)
 }
 
 #' @rdname neighborwise
@@ -57,40 +51,38 @@ neighborwise.formula <- function(formula, data, rate, ...) {
   modFrame <- stats::model.frame(formula, data)
   attr(modFrame, "terms") <- NULL
 
-  aux <- neighborwise.default(modFrame[,-1,drop=FALSE], modFrame[,1,drop=FALSE],
+  y <- neighborwise.default(modFrame[,-1,drop=FALSE], modFrame[,1,drop=FALSE],
     rate, ...)
 
-  tmp <- data.frame(aux$y, aux$x)
-  colnames(tmp) <- colnames(modFrame)
-  tmp[,colnames(data)]
+  modFrame[,1] <- y
+  modFrame[,colnames(data)]
 }
 
-dist <- function(data) {
-  as.matrix(cluster::daisy(data[,-ncol(data)], metric="gower", stand=TRUE))
+dist <- function(x) {
+  as.matrix(cluster::daisy(x, metric="gower", stand=TRUE))
 }
 
-intra <- function(dst, data, i) {
-  tmp <- rownames(data[data$class == data[i,]$class,])
-  aux <- min(dst[i, setdiff(tmp, i)])
-  return(aux)
+intra <- function(x, y, d, i) {
+  tmp <- rownames(x[y == y[i],])
+  min(d[i, setdiff(tmp, i)])
 }
 
-inter <- function(dst, data, i) {
-  tmp <- rownames(data[data$class != data[i,]$class,])
-  aux <- min(dst[i, tmp])
-  return(aux)
+inter <- function(x, y, d, i) {
+  tmp <- rownames(x[y != y[i],])
+  min(d[i, tmp])
 }
 
-n2 <- function(data) {
+n2 <- function(x, y) {
 
-  dst <- dist(data)
+  d <- dist(x)
 
-  aux <- sapply(rownames(data), function(i) {
-    a <- intra(dst, data, i)
-    r <- inter(dst, data, i)
+  aux <- sapply(1:nrow(x), function(i) {
+    a <- intra(x, y, d, i)
+    r <- inter(x, y, d, i)
     c(a, r)
   })
 
+  colnames(aux) <- rownames(x)
   aux <- aux[1,]/aux[2,]
   return(aux)
 }

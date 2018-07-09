@@ -29,20 +29,13 @@ nonlinearwise.default <- function(x, y, rate, ...) {
     stop("the noise rate must be higher than 0 and lower than 1")
   }
 
-  data <- data.frame(x, class=y)
-  rate <- trunc(nrow(data)*rate)
-
-  bins <- ovo(data)
+  bins <- ovo(x, y)
+  rate <- trunc(nrow(x)*rate)
   model <- lapply(bins, svr)
 
   noise <- translate(l1(bins, model))
-  noise <- names(sort(noise)[1:rate])
-  data <- generate(data, noise)
-
-  df <- list()
-  df$x <- data[,-ncol(data)]
-  df$y <- data$class
-  df
+  noise <- rev(order(noise))[1:rate]
+  generate(noise, y)
 }
 
 #' @rdname nonlinearwise
@@ -60,26 +53,25 @@ nonlinearwise.formula <- function(formula, data, rate, ...) {
   modFrame <- stats::model.frame(formula, data)
   attr(modFrame, "terms") <- NULL
 
-  aux <- nonlinearwise.default(modFrame[,-1,drop=FALSE],
-    modFrame[,1,drop=FALSE], rate, ...)
+  y <- nonlinearwise.default(modFrame[,-1,drop=FALSE], modFrame[,1,drop=FALSE],
+    rate, ...)
 
-  tmp <- data.frame(aux$y, aux$x)
-  colnames(tmp) <- colnames(modFrame)
-  tmp[,colnames(data)]
+  modFrame[,1] <- y
+  modFrame[,colnames(data)]
 }
 
 svr <- function(data) {
-  e1071::svm(class ~ ., data, scale=FALSE, kernel="radial")
+  e1071::svm(data$x, data$y, scale=FALSE, kernel="radial")
 }
 
-ovo <- function(data) {
+ovo <- function(x, y) {
 
-  aux <- utils::combn(levels(data$class), 2)
+  aux <- utils::combn(levels(y), 2)
 
   tmp <- apply(aux, 2, function(i) {
-    vet <- base::subset(data, data$class %in% i)
-    vet$class <- factor(vet$class)
-    return(vet)
+    x <- base::subset(x, y %in% i)
+    y <- factor(base::subset(y, y %in% i))
+    list(x=x, y=y)
   })
 
   return(tmp)
@@ -94,7 +86,7 @@ translate <- function(data) {
 l1 <- function(data, model) {
 
   aux <- mapply(function(m, d) {
-    tmp <- stats::predict(m, d, decision.values=TRUE)
+    tmp <- stats::predict(m, d$x, decision.values=TRUE)
     tmp <- abs(attr(tmp, "decision.values"))
     data.frame(r=rownames(tmp), d=tmp)
   }, m=model, d=data, SIMPLIFY=FALSE)

@@ -29,16 +29,9 @@ random.default <- function(x, y, rate, ...) {
     stop("the noise rate must be higher than 0 and lower than 1")
   }
 
-  data <- data.frame(x, class=y)
-  rate <- trunc(nrow(data)*rate)
-
-  noise <- sample(rownames(data), rate)
-  data <- generate(data, noise)
-
-  df <- list()
-  df$x <- data[,-ncol(data)]
-  df$y <- data$class
-  df
+  rate <- trunc(nrow(x)*rate)
+  noise <- sample(1:nrow(x), rate)
+  generate(noise, y)
 }
 
 #' @rdname random
@@ -56,20 +49,18 @@ random.formula <- function(formula, data, rate, ...) {
   modFrame <- stats::model.frame(formula, data)
   attr(modFrame, "terms") <- NULL
 
-  aux <- random.default(modFrame[,-1,drop=FALSE], modFrame[,1,drop=FALSE],
+  y <- random.default(modFrame[,-1,drop=FALSE], modFrame[,1,drop=FALSE],
     rate, ...)
 
-  tmp <- data.frame(aux$y, aux$x)
-  colnames(tmp) <- colnames(modFrame)
-  tmp[,colnames(data)]
+  modFrame[,1] <- y
+  modFrame[,colnames(data)]
 }
 
-sampling <- function(i, data) {
-  sample(setdiff(levels(data$class), data[i,]$class), 1)
+sampling <- function(n, y) {
+  sample(setdiff(levels(y), y[n]), 1)
 }
 
-generate <- function(data, noise) {
-  noise <- intersect(rownames(data), noise)
-  data[noise,]$class <- sapply(noise, sampling, data)
-  return(data)
+generate <- function(n, y) {
+  y[n] <- sapply(n, sampling, y)
+  return(y)
 }
