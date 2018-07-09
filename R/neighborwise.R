@@ -57,7 +57,8 @@ neighborwise.formula <- function(formula, data, rate, ...) {
   modFrame <- stats::model.frame(formula, data)
   attr(modFrame, "terms") <- NULL
 
-  aux <- neighborwise.default(modFrame[,-1], modFrame[,1], rate, ...)
+  aux <- neighborwise.default(modFrame[,-1,drop=FALSE], modFrame[,1,drop=FALSE],
+    rate, ...)
 
   tmp <- data.frame(aux$y, aux$x)
   colnames(tmp) <- colnames(modFrame)
